@@ -2,17 +2,21 @@ package com.example.to_dolistmanager
 
 import android.os.Bundle
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.content.Intent
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
     public var items: ArrayList<taskItem>? = null
 
     private lateinit var listView: ListView
+    private lateinit var button: Button
     private lateinit var adapter: listAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         listView = findViewById<ListView>(R.id.listView)
+        button = findViewById<Button>(R.id.button1)
+        val textView = findViewById<TextView>(R.id.Title)
 
         items = ArrayList<taskItem>()
 
@@ -35,6 +41,11 @@ class MainActivity : AppCompatActivity() {
             val items: taskItem = items!![position] as taskItem
             items.checked = !items.checked
             adapter.notifyDataSetChanged()
+        }
+
+        button.setOnClickListener {
+            val intent = Intent(this, NewTask::class.java)
+            startActivity(intent)
         }
     }
 }

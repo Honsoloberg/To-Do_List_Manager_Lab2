@@ -14,13 +14,14 @@ class NewTask : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_new_task);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.NewTaskLayout)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.NewTaskLayout)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
-        val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
+//        why was this calling the entire XML file??????????????????
+//        val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
         val textViewTitle = findViewById<EditText>(R.id.taskTitle);
     }
 }
