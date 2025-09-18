@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.LinearLayout
+import android.widget.EditText
 
 class NewTask : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +21,6 @@ class NewTask : AppCompatActivity() {
         }
 
         val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
-        val textViewTitle = findViewById<TextView>(R.id.taskTitle);
+        val textViewTitle = findViewById<EditText>(R.id.taskTitle);
     }
 }
