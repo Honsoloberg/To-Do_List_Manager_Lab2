@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         items = ArrayList<taskItem>()
 
+        //dummy tasks
+        items!!.add(taskItem("Wash Clothes", false))
+        items!!.add(taskItem("Sweep Kitchen", false))
+        items!!.add(taskItem("Clean Bathroom", false))
+
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
 
