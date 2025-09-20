@@ -15,6 +15,7 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
     private class ItemHolder {
         lateinit var textname: TextView
         lateinit var checkBox: CheckBox
+        lateinit var taskDate: TextView
     }
 
     override fun getCount(): Int {
@@ -35,6 +36,7 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
 
             itemHolder.textname = converter.findViewById<TextView>(R.id.textView)
             itemHolder.checkBox = converter.findViewById<CheckBox>(R.id.checkBox)
+            itemHolder.taskDate = converter.findViewById<TextView>(R.id.taskDate)
 
             result = converter
             converter.tag = itemHolder
@@ -45,6 +47,7 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
 
         val item: taskItem = getItem(position)
         itemHolder.textname.text = item.name
+        itemHolder.taskDate.text = item.date
         itemHolder.checkBox.isChecked = item.checked
 
         return result

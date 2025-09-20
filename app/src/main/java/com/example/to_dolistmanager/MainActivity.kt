@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
         items = ArrayList<taskItem>()
 
         //dummy tasks
-        items!!.add(taskItem("Wash Clothes", false))
-        items!!.add(taskItem("Sweep Kitchen", false))
-        items!!.add(taskItem("Clean Bathroom", false))
+        items!!.add(taskItem("Wash Clothes", "09-21-2025", false))
+        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", false))
+        items!!.add(taskItem("Clean Bathroom", "09-21-2025", false))
 
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
