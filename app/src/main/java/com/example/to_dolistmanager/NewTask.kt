@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.EditText
+import android.widget.Button
+import android.content.Intent
 
 class NewTask : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,5 +25,12 @@ class NewTask : AppCompatActivity() {
 //        why was this calling the entire XML file??????????????????
 //        val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
         val textViewTitle = findViewById<EditText>(R.id.taskTitle);
+
+        //Back Button
+        val backButton = findViewById<Button>(R.id.backButton);
+        backButton.setOnClickListener () {
+            val backIntent = Intent(this, MainActivity::class.java)
+            startActivity(backIntent)
+        }
     }
 }
