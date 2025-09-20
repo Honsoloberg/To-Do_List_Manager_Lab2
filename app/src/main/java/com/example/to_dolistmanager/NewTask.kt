@@ -26,6 +26,9 @@ class NewTask : AppCompatActivity() {
 //        val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
         val textViewTitle = findViewById<EditText>(R.id.taskTitle);
 
+//      Dates from DatePicker MUST BE in string form. A new dummy template has been
+//      pushed to the main activity. $day/${month+1}/$year
+
         //Back Button
         val backButton = findViewById<Button>(R.id.backButton);
         backButton.setOnClickListener () {
