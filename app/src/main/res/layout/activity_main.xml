@@ -10,12 +10,13 @@
     <TextView
         android:id="@+id/Title"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="100dp"
         android:background="@color/purple"
         android:gravity="center"
         android:text="To-Do List Manager"
         android:textColor="@color/white"
         android:textSize="40dp"
+        android:paddingTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
