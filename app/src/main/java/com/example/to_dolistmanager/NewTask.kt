@@ -1,5 +1,6 @@
 package com.example.to_dolistmanager
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.EditText
 import android.widget.Button
 import android.content.Intent
+import android.widget.DatePicker
 
 class NewTask : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,5 +37,23 @@ class NewTask : AppCompatActivity() {
             val backIntent = Intent(this, MainActivity::class.java)
             startActivity(backIntent)
         }
+
+        //Name
+        val taskName= findViewById<EditText>(R.id.taskTitle)
+
+        //Description
+        val description = findViewById<EditText>(R.id.description)
+
+        //Date picker into string
+        val datePicker= findViewById<DatePicker>(R.id.pickDate)
+        val date = String.format("%d-%d-%d", datePicker.dayOfMonth, datePicker.month, datePicker.year)
+        val resultIntent = Intent().apply {
+            putExtra("date", date);
+            putExtra("title", taskName.text )
+            putExtra("description", description.text)
+        }
+        setResult(Activity.RESULT_OK, resultIntent )
+        finish()
+
     }
 }
