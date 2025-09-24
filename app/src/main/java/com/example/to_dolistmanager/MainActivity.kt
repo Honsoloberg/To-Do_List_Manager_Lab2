@@ -1,5 +1,6 @@
 package com.example.to_dolistmanager
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.Button
@@ -14,6 +15,8 @@ import android.widget.TextView
 class MainActivity : AppCompatActivity() {
 
     public var items: ArrayList<taskItem>? = null
+
+    val TASK_RESULT_CODE = 100
 
     private lateinit var listView: ListView
     private lateinit var button: Button
@@ -30,9 +33,9 @@ class MainActivity : AppCompatActivity() {
         items = ArrayList<taskItem>()
 
         //dummy tasks
-        items!!.add(taskItem("Wash Clothes", "09-21-2025", false))
-        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", false))
-        items!!.add(taskItem("Clean Bathroom", "09-21-2025", false))
+        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false))
+        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
+        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
 
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
@@ -44,8 +47,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            val intent = Intent(this, NewTask::class.java)
-            startActivity(intent)
+            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == TASK_RESULT_CODE && resultCode == Activity.RESULT_OK){
+            var title = data?.getStringExtra("title")
+            var date = data?.getStringExtra("date")
+            var description = data?.getStringExtra("description")
+            items!!.add(taskItem(title, date, description, false))
+            adapter.notifyDataSetChanged()
         }
     }
 }

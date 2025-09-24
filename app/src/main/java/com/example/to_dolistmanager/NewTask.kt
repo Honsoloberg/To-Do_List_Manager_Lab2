@@ -18,15 +18,15 @@ class NewTask : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_new_task);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.NewTaskLayout)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
-//        why was this calling the entire XML file??????????????????
-//        val screen = findViewById<LinearLayout>(R.id.NewTaskLayout);
-        val textViewTitle = findViewById<EditText>(R.id.taskTitle);
+        //Task Name Field
+        val taskName= findViewById<EditText>(R.id.taskTitle)
+
+        //Task Description Field
+        val description = findViewById<EditText>(R.id.description)
+
+        //Date Selector
+        val datePicker= findViewById<DatePicker>(R.id.pickDate)
 
 //      Dates from DatePicker MUST BE in string form. A new dummy template has been
 //      pushed to the main activity. $day/${month+1}/$year
@@ -35,25 +35,29 @@ class NewTask : AppCompatActivity() {
         val backButton = findViewById<Button>(R.id.backButton);
         backButton.setOnClickListener () {
             val backIntent = Intent(this, MainActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
 
-        //Name
-        val taskName= findViewById<EditText>(R.id.taskTitle)
-
-        //Description
-        val description = findViewById<EditText>(R.id.description)
-
-        //Date picker into string
-        val datePicker= findViewById<DatePicker>(R.id.pickDate)
-        val date = String.format("%d-%d-%d", datePicker.dayOfMonth, datePicker.month, datePicker.year)
-        val resultIntent = Intent().apply {
-            putExtra("date", date);
-            putExtra("title", taskName.text )
-            putExtra("description", description.text)
+        //Done Button
+        val saveButton = findViewById<Button>(R.id.saveTask)
+        saveButton.setOnClickListener {
+            var month = ""
+            if(datePicker.month<10){
+                month = "0${datePicker.month}"
+            }else{
+                month = "${datePicker.month}"
+            }
+            val date = String.format("%s-%d-%d", month, datePicker.dayOfMonth, datePicker.year)
+            val title = String.format("%s", taskName.text)
+            val desc = String.format("%s", description.text)
+            val resultIntent = Intent().apply {
+                putExtra("title", title)
+                putExtra("date", date);
+                putExtra("description", desc)
+            }
+            setResult(Activity.RESULT_OK, resultIntent )
+            finish()
         }
-        setResult(Activity.RESULT_OK, resultIntent )
-        finish()
 
     }
 }

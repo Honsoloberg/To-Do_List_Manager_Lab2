@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAdapter<Any?>(mContext, R.layout.task, dataset) {
     private class ItemHolder {
-        lateinit var textname: TextView
+        lateinit var taskName: TextView
         lateinit var checkBox: CheckBox
         lateinit var taskDate: TextView
+        lateinit var taskDesc: TextView
     }
 
     override fun getCount(): Int {
@@ -34,9 +35,10 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
             itemHolder = ItemHolder()
             converter = LayoutInflater.from(parent.context).inflate(R.layout.task, parent, false)
 
-            itemHolder.textname = converter.findViewById<TextView>(R.id.textView)
+            itemHolder.taskName = converter.findViewById<TextView>(R.id.taskName)
             itemHolder.checkBox = converter.findViewById<CheckBox>(R.id.checkBox)
             itemHolder.taskDate = converter.findViewById<TextView>(R.id.taskDate)
+            itemHolder.taskDesc = converter.findViewById<TextView>(R.id.taskDesc)
 
             result = converter
             converter.tag = itemHolder
@@ -46,8 +48,9 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
         }
 
         val item: taskItem = getItem(position)
-        itemHolder.textname.text = item.name
+        itemHolder.taskName.text = item.name
         itemHolder.taskDate.text = item.date
+        itemHolder.taskDesc.text = item.description
         itemHolder.checkBox.isChecked = item.checked
 
         return result
