@@ -28,11 +28,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //initialize views
         listView = findViewById<ListView>(R.id.listView)
         button = findViewById<Button>(R.id.button1)
         val textView = findViewById<TextView>(R.id.Title)
         val searchBar = findViewById<SearchView>(R.id.searchBar)
 
+        //Array for tasks in list
         items = ArrayList<taskItem>()
 
         //dummy tasks
@@ -40,54 +42,23 @@ class MainActivity : AppCompatActivity() {
         items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
         items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
 
+        //Adapter for tasklist
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
 
+        //Function for updating checkbox's onclick
         listView.onItemClickListener = AdapterView.OnItemClickListener {_,_, position, _ ->
             val items: taskItem = items!![position] as taskItem
             items.checked = !items.checked
             adapter.notifyDataSetChanged()
         }
 
+        //Start's New Task activity
         button.setOnClickListener {
-            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
-        }
-
-//        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                var exists = items?.any {it.name?.contains(query as CharSequence, true) == true}
-//
-//                if (exists == true) {
-//                    // if query exist within list we
-//                    // are filtering our list adapter.
-//                    adapter.filter(query)
-//                } else {
-//                    // if query is not present we are displaying
-//                    // a toast message as no  data found..
-//                    Toast.makeText(this@MainActivity, "No Task Found...", Toast.LENGTH_LONG).show()
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                // if query text is change in that case we
-//                // are filtering our adapter with
-//                // new text on below line.
-//                adapter.filter(newText)
-//                adapter.notifyDataSetChanged()
-//                return false
-//            }
-//        })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == TASK_RESULT_CODE && resultCode == Activity.RESULT_OK){
-            var title = data?.getStringExtra("title")
-            var date = data?.getStringExtra("date")
-            var description = data?.getStringExtra("description")
-            items!!.add(taskItem(title, date, description, false))
-            adapter.notifyDataSetChanged()
+            val intent = Intent(this, NewTask::class.java)
+            startActivity(intent)
         }
     }
+
+
 }

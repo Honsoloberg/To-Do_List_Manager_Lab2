@@ -28,35 +28,18 @@ class NewTask : AppCompatActivity() {
         //Date Selector
         val datePicker= findViewById<DatePicker>(R.id.pickDate)
 
-//      Dates from DatePicker MUST BE in string form. A new dummy template has been
-//      pushed to the main activity. $day/${month+1}/$year
-
         //Back Button
         val backButton = findViewById<Button>(R.id.backButton);
         backButton.setOnClickListener () {
-            val backIntent = Intent(this, MainActivity::class.java)
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
         //Done Button
         val saveButton = findViewById<Button>(R.id.saveTask)
         saveButton.setOnClickListener {
-            var month = ""
-            if(datePicker.month<10){
-                month = "0${datePicker.month}"
-            }else{
-                month = "${datePicker.month}"
-            }
-            val date = String.format("%s-%d-%d", month, datePicker.dayOfMonth, datePicker.year)
-            val title = String.format("%s", taskName.text)
-            val desc = String.format("%s", description.text)
-            val resultIntent = Intent().apply {
-                putExtra("title", title)
-                putExtra("date", date);
-                putExtra("description", desc)
-            }
-            setResult(Activity.RESULT_OK, resultIntent )
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
     }
