@@ -16,6 +16,8 @@
         android:text="New Task"
         android:textColor="@color/white"
         android:textSize="40dp"
+        android:drawableStart="@drawable/to_do_app_logo2"
+        android:paddingRight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

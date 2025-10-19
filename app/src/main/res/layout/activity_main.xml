@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
+    
     <TextView
         android:id="@+id/Title"
         android:layout_width="match_parent"
@@ -15,11 +15,13 @@
         android:gravity="center"
         android:text="To-Do List Manager"
         android:textColor="@color/white"
-        android:textSize="40dp"
-        android:paddingTop="28dp"
+        android:textSize="35dp"
+        android:paddingTop="20dp"
+        android:drawableStart="@drawable/to_do_app_logo2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <SearchView
         android:id="@+id/searchBar"
