@@ -64,32 +64,6 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
         }
-
-//        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                var exists = items?.any {it.name?.contains(query as CharSequence, true) == true}
-//
-//                if (exists == true) {
-//                    // if query exist within list we
-//                    // are filtering our list adapter.
-//                    adapter.filter(query)
-//                } else {
-//                    // if query is not present we are displaying
-//                    // a toast message as no  data found..
-//                    Toast.makeText(this@MainActivity, "No Task Found...", Toast.LENGTH_LONG).show()
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                // if query text is change in that case we
-//                // are filtering our adapter with
-//                // new text on below line.
-//                adapter.filter(newText)
-//                adapter.notifyDataSetChanged()
-//                return false
-//            }
-//        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
