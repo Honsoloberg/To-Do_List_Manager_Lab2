@@ -10,22 +10,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
+import android.widget.SearchView
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    public var items: ArrayList<taskItem>? = null
+    var items: ArrayList<taskItem>? = null
 
     val TASK_RESULT_CODE = 100
 
     private lateinit var listView: ListView
     private lateinit var button: Button
     private lateinit var adapter: listAdapter
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        searchView = findViewById<SearchView>(R.id.searchBar)
         listView = findViewById<ListView>(R.id.listView)
         button = findViewById<Button>(R.id.button1)
         val textView = findViewById<TextView>(R.id.Title)
@@ -40,8 +43,18 @@ class MainActivity : AppCompatActivity() {
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
 
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+        })
+
         listView.onItemClickListener = AdapterView.OnItemClickListener {_,_, position, _ ->
-            val items: taskItem = items!![position] as taskItem
+            val items: taskItem = items!![position]
             items.checked = !items.checked
             adapter.notifyDataSetChanged()
         }
@@ -58,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             var date = data?.getStringExtra("date")
             var description = data?.getStringExtra("description")
             items!!.add(taskItem(title, date, description, false))
-            adapter.notifyDataSetChanged()
+            adapter.updateDataset(items!!)
         }
     }
 }

@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.Filter
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView
 import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.RecyclerView
 
-class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAdapter<Any?>(mContext, R.layout.task, dataset) {
+class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): ArrayAdapter<taskItem>(mContext, R.layout.task, dataset) {
+
+    private var filteredItems: ArrayList<taskItem> = ArrayList(dataset)
     private class ItemHolder {
         lateinit var taskName: TextView
         lateinit var checkBox: CheckBox
@@ -20,11 +23,11 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
     }
 
     override fun getCount(): Int {
-        return dataset.size
+        return filteredItems.size
     }
 
     override fun getItem(position: Int): taskItem {
-        return dataset[position] as taskItem
+        return filteredItems[position]
     }
 
     override fun getView(position: Int, converter: View?, parent: ViewGroup): View{
@@ -54,5 +57,46 @@ class listAdapter(private val dataset: ArrayList<*>, mContext: Context): ArrayAd
         itemHolder.checkBox.isChecked = item.checked
 
         return result
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults? {
+                val query = constraint?.toString()?.trim()?.lowercase() ?:""
+                val results = FilterResults()
+
+                if(query.isEmpty()){
+                    results.values = ArrayList(dataset)
+                    results.count = dataset.size
+                } else {
+                    val filteredList = ArrayList<taskItem>()
+                    for (t in dataset){
+                        val title = t.name?.lowercase() ?: ""
+                        val desc = t.description?.lowercase() ?: ""
+                        val date = t.date?.lowercase() ?: ""
+
+                        if(title.contains(query) || desc.contains(query) || date.contains(query)){
+                            filteredList.add(t)
+                        }
+                    }
+
+                    results.values = filteredList
+                    results.count = filteredList.size
+                }
+
+                return results
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                filteredItems = (results?.values as? ArrayList<taskItem>) ?: ArrayList()
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun updateDataset(newDataSet: ArrayList<taskItem>){
+        filteredItems = ArrayList(newDataSet)
+        notifyDataSetChanged()
     }
 }
