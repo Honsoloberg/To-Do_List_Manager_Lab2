@@ -63,9 +63,10 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
             val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
             val desc = cursor.getString(cursor.getColumnIndexOrThrow("description"))
             val checkInt = cursor.getInt(cursor.getColumnIndexOrThrow("checked"))
+            val colorInt = cursor.getInt(cursor.getColumnIndexOrThrow("color"))
             val checkBool: Boolean = if(checkInt == 0) false else true
 
-            tasks!!.add(taskItem(title, date, desc, checkBool))
+            tasks!!.add(taskItem(title, date, desc, checkBool, colorInt))
         }
         cursor.close()
         return tasks

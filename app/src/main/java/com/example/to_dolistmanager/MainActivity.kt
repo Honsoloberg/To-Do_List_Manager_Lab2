@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var button: Button
     private lateinit var adapter: listAdapter
     private lateinit var searchView: SearchView
+    private lateinit var deleteTasks: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         searchView = findViewById<SearchView>(R.id.searchBar)
         listView = findViewById<ListView>(R.id.listView)
         button = findViewById<Button>(R.id.button1)
+        deleteTasks = findViewById<Button>(R.id.deleteTasks)
         val textView = findViewById<TextView>(R.id.Title)
 
         items = ArrayList<taskItem>()
@@ -78,6 +80,12 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener {
             startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
+        }
+
+        deleteTasks.setOnClickListener {
+            dbHelper.deleteAllTasks()
+            items = dbHelper.getTasks()
+            adapter.notifyDataSetChanged()
         }
     }
 
