@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Filter
+import android.widget.RelativeLayout
 import android.widget.TextView
 
 class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): ArrayAdapter<taskItem>(mContext, R.layout.task, dataset) {
@@ -17,6 +18,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
         lateinit var checkBox: CheckBox
         lateinit var taskDate: TextView
         lateinit var taskDesc: TextView
+        lateinit var background: View
     }
 
     override fun getCount(): Int {
@@ -39,6 +41,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
             itemHolder.checkBox = converter.findViewById<CheckBox>(R.id.checkBox)
             itemHolder.taskDate = converter.findViewById<TextView>(R.id.taskDate)
             itemHolder.taskDesc = converter.findViewById<TextView>(R.id.taskDesc)
+            itemHolder.background = converter.findViewById<RelativeLayout>(R.id.taskLayout)
 
 
             result = converter
@@ -54,7 +57,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
         itemHolder.taskDesc.text = item.description
         itemHolder.checkBox.isChecked = item.checked
 
-        itemHolder.taskName.setBackgroundColor(item.color)
+        itemHolder.background.setBackgroundColor(item.color)
 
 
         return result

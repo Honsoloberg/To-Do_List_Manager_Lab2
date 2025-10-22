@@ -87,6 +87,7 @@ class NewTask : AppCompatActivity() {
             val colorButton = View(this).apply {
                 layoutParams = LinearLayout.LayoutParams(100, 100).apply {
                    setMargins(18, 5, 18, 0)
+
                 }
                 setBackgroundColor(color)
                 setOnClickListener {
