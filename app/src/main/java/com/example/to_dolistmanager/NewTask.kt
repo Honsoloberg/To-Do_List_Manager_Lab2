@@ -14,6 +14,10 @@ import android.content.Intent
 import android.widget.DatePicker
 
 class NewTask : AppCompatActivity() {
+
+    //variable for database access
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,13 +54,20 @@ class NewTask : AppCompatActivity() {
             val date = String.format("%s-%d-%d", month, datePicker.dayOfMonth, datePicker.year)
             val title = String.format("%s", taskName.text)
             val desc = String.format("%s", description.text)
-            val resultIntent = Intent().apply {
-                putExtra("title", title)
-                putExtra("date", date);
-                putExtra("description", desc)
-            }
-            setResult(Activity.RESULT_OK, resultIntent )
-            finish()
+
+            //insert new task into database, check initialized to false
+            dbHelper.insertTask(title, date, desc, false)
+
+            //return to main activity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+//            val resultIntent = Intent().apply {
+//                putExtra("title", title)
+//                putExtra("date", date);
+//                putExtra("description", desc)
+//            }
+//            setResult(Activity.RESULT_OK, resultIntent )
+//            finish()
         }
 
     }

@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
 
     val TASK_RESULT_CODE = 100
 
+    //variable for database access
+    private lateinit var dbHelper: DatabaseHelper
     private lateinit var listView: ListView
     private lateinit var button: Button
     private lateinit var adapter: listAdapter
@@ -36,9 +38,16 @@ class MainActivity : AppCompatActivity() {
         items = ArrayList<taskItem>()
 
         //dummy tasks
-        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false))
-        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
-        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
+        //add dummy tasks to database
+        dbHelper.insertTask("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false)
+        dbHelper.insertTask("Sweep Kitchen", "09-21-2025", "this is a description", false)
+        dbHelper.insertTask("Clean Bathroom", "09-21-2025", "this is a description", false)
+//        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false))
+//        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
+//        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
+
+        //populate items list using the database
+        items = dbHelper.getTasks()
 
         adapter = listAdapter(items!!, applicationContext)
         listView.adapter = adapter
@@ -60,18 +69,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
+            val intent = Intent(this,NewTask::class.java)
+            startActivity((intent))
+//            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == TASK_RESULT_CODE && resultCode == Activity.RESULT_OK){
-            var title = data?.getStringExtra("title")
-            var date = data?.getStringExtra("date")
-            var description = data?.getStringExtra("description")
-            items!!.add(taskItem(title, date, description, false))
-            adapter.updateDataset(items!!)
-        }
+    //when the activity is started again, update the tasklist from the database
+    override fun onStart(){
+        super.onStart()
+
+        items = ArrayList<taskItem>()
+        items = dbHelper.getTasks()
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if(requestCode == TASK_RESULT_CODE && resultCode == Activity.RESULT_OK){
+//            var title = data?.getStringExtra("title")
+//            var date = data?.getStringExtra("date")
+//            var description = data?.getStringExtra("description")
+//            items!!.add(taskItem(title, date, description, false))
+//            adapter.updateDataset(items!!)
+//        }
+//    }
 }
