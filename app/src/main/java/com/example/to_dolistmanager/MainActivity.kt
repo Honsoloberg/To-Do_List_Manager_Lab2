@@ -39,16 +39,19 @@ class MainActivity : AppCompatActivity() {
 
         items = ArrayList<taskItem>()
 
+        dbHelper = DatabaseHelper(this)
+//        dbHelper.deleteAllTasks()
+
         //dummy tasks
         //add dummy tasks to database
-        dbHelper.insertTask("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false)
-        dbHelper.insertTask("Sweep Kitchen", "09-21-2025", "this is a description", false)
-        dbHelper.insertTask("Clean Bathroom", "09-21-2025", "this is a description", false)
+//        dbHelper.insertTask("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, 5)
+//        dbHelper.insertTask("Sweep Kitchen", "09-21-2025", "this is a description", true, 3)
+//        dbHelper.insertTask("Clean Bathroom", "09-21-2025", "this is a description", false, 7)
 //        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false))
 //        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
 //        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
 
-        //populate items list using the database
+//        //populate items list using the database
         items = dbHelper.getTasks()
 
         adapter = listAdapter(items!!, applicationContext)
@@ -68,6 +71,9 @@ class MainActivity : AppCompatActivity() {
             val items: taskItem = items!![position]
             items.checked = !items.checked
             adapter.notifyDataSetChanged()
+            var nameOfTask = items.name as String
+            var checkStatus = items.checked
+            dbHelper.updateTaskCheck(nameOfTask, !checkStatus)
         }
 
         button.setOnClickListener {
@@ -75,10 +81,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //when the activity is started again, update the tasklist from the database
+//    when the activity is started again, update the tasklist from the database
     override fun onStart(){
         super.onStart()
 
+        dbHelper = DatabaseHelper(this)
         items = ArrayList<taskItem>()
         items = dbHelper.getTasks()
     }

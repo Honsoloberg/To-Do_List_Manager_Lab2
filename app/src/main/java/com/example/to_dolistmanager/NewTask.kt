@@ -23,7 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 class NewTask : AppCompatActivity() {
 
-    //variable for database access
+//    //variable for database access
     private lateinit var dbHelper: DatabaseHelper
 
 
@@ -67,12 +67,14 @@ class NewTask : AppCompatActivity() {
             val title = String.format("%s", taskName.text)
             val desc = String.format("%s", description.text)
 
-            //insert new task into database, check initialized to false
-            dbHelper.insertTask(title, date, desc, false)
-
+            dbHelper = DatabaseHelper(this)
+//            //insert new task into database, check initialized to false
+            dbHelper.insertTask(title, date, desc, false, 6)
+//
             //return to main activity
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+
 //            val resultIntent = Intent().apply {
 //                putExtra("title", title)
 //                putExtra("date", date);

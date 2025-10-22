@@ -15,8 +15,8 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
                 title TEXT NOT NULL,
                 date TEXT NOT NULL,
                 description TEXT NOT NULL,
-                checked INTEGER DEFAULT 0,
-                color TEXT CHECK (type IN('red', 'yellow', 'green', 'blue', 'purple')) 
+                checked INTEGER NOT NULL,
+                color INTEGER NOT NULL
                 )
             """.trimIndent()
         )
@@ -27,11 +27,29 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
         onCreate(db)
     }
 
-    fun insertTask(title: String, date: String, desc: String, check: Boolean ){
-        val checkInt: Int = if(check) 1 else 0
+    //for testing
+    fun deleteTable(){
         val db = writableDatabase
-        db.execSQL("INSERT INTO Tasks (title, date, description, checked) VALUES (?,?,?,?)",
-            arrayOf(title, date, desc, checkInt))
+        db.execSQL("DROP TABLE IF EXISTS Tasks")
+        db.execSQL(
+            """
+                CREATE TABLE IF NOT EXISTS Tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                date TEXT NOT NULL,
+                description TEXT NOT NULL,
+                checked INTEGER NOT NULL,
+                color INTEGER NOT NULL
+                )
+            """.trimIndent()
+        )
+    }
+
+    fun insertTask(title: String, date: String, desc: String, checkBool: Boolean, color: Int ){
+        val checkInt: Int = if(checkBool) 1 else 0
+        val db = writableDatabase
+        db.execSQL("INSERT INTO Tasks (title,date,description,checked,color) VALUES (?,?,?,?,?)",
+            arrayOf(title,date,desc,checkInt, color))
     }
 
     //return all tasks in the database as an array of taskItems
@@ -44,10 +62,10 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
             val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
             val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
             val desc = cursor.getString(cursor.getColumnIndexOrThrow("description"))
-            val check = cursor.getInt(cursor.getColumnIndexOrThrow("checked"))
-            val BoolCheck: Boolean = if(check == 0) false else true
+            val checkInt = cursor.getInt(cursor.getColumnIndexOrThrow("checked"))
+            val checkBool: Boolean = if(checkInt == 0) false else true
 
-            tasks!!.add(taskItem(title, date, desc, BoolCheck))
+            tasks!!.add(taskItem(title, date, desc, checkBool))
         }
         cursor.close()
         return tasks
