@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         deleteTasks.setOnClickListener {
             dbHelper.deleteAllTasks()
             items = dbHelper.getTasks()
-            adapter.notifyDataSetChanged()
+            adapter.updateDataset(items as ArrayList<taskItem>)
         }
     }
 
