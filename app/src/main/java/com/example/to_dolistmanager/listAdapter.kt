@@ -8,9 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Filter
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
-import androidx.constraintlayout.widget.Group
-import androidx.recyclerview.widget.RecyclerView
 
 class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): ArrayAdapter<taskItem>(mContext, R.layout.task, dataset) {
 

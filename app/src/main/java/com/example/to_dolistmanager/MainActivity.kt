@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         listView = findViewById<ListView>(R.id.listView)
         button = findViewById<Button>(R.id.button1)
         val textView = findViewById<TextView>(R.id.Title)
-        val searchBar = findViewById<SearchView>(R.id.searchBar)
 
         items = ArrayList<taskItem>()
 
