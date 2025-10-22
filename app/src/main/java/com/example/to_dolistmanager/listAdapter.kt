@@ -40,6 +40,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
             itemHolder.taskDate = converter.findViewById<TextView>(R.id.taskDate)
             itemHolder.taskDesc = converter.findViewById<TextView>(R.id.taskDesc)
 
+
             result = converter
             converter.tag = itemHolder
         }else{
@@ -52,6 +53,9 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
         itemHolder.taskDate.text = item.date
         itemHolder.taskDesc.text = item.description
         itemHolder.checkBox.isChecked = item.checked
+
+        itemHolder.taskName.setBackgroundColor(item.color)
+
 
         return result
     }
