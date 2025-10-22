@@ -13,6 +13,8 @@ import android.content.Intent
 import android.widget.SearchView
 import android.widget.TextView
 
+import android.graphics.Color
+
 class MainActivity : AppCompatActivity() {
 
     var items: ArrayList<taskItem>? = null
@@ -70,7 +72,9 @@ class MainActivity : AppCompatActivity() {
             var title = data?.getStringExtra("title")
             var date = data?.getStringExtra("date")
             var description = data?.getStringExtra("description")
-            items!!.add(taskItem(title, date, description, false))
+                //default color is light grey
+            val color = data?.getIntExtra("color", Color.LTGRAY) ?: Color.LTGRAY
+            items!!.add(taskItem(title, date, description, false, color))
             adapter.updateDataset(items!!)
         }
     }
