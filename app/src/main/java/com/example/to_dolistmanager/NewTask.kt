@@ -13,10 +13,22 @@ import android.widget.Button
 import android.content.Intent
 import android.widget.DatePicker
 
+
+import android.view.View //
+import android.graphics.Color //
+import androidx.core.content.ContextCompat //
+import android.graphics.drawable.GradientDrawable //
+import androidx.constraintlayout.widget.ConstraintLayout
+
+
 class NewTask : AppCompatActivity() {
 
     //variable for database access
     private lateinit var dbHelper: DatabaseHelper
+
+
+    private var selectedColor: Int = Color.LTGRAY // Default color
+    private var selectedColorView: View? = null //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +80,33 @@ class NewTask : AppCompatActivity() {
 //            }
 //            setResult(Activity.RESULT_OK, resultIntent )
 //            finish()
+        }
+
+
+        // colour code
+
+        val colorPickerLayout = findViewById<LinearLayout>(R.id.colorPickerLayout)
+
+        val colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.GRAY)
+
+       // colour buttons
+        colors.forEach { color ->
+            val colorButton = View(this).apply {
+                layoutParams = LinearLayout.LayoutParams(100, 100).apply {
+                   setMargins(18, 5, 18, 0)
+
+                }
+                setBackgroundColor(color)
+                setOnClickListener {
+
+                    //store selected colour
+                    selectedColor = color
+
+                }
+
+            }
+
+            colorPickerLayout.addView(colorButton)
         }
 
     }

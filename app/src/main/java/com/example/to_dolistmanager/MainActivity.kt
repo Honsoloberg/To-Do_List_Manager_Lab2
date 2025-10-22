@@ -13,6 +13,8 @@ import android.content.Intent
 import android.widget.SearchView
 import android.widget.TextView
 
+import android.graphics.Color
+
 class MainActivity : AppCompatActivity() {
 
     var items: ArrayList<taskItem>? = null
@@ -69,9 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            val intent = Intent(this,NewTask::class.java)
-            startActivity((intent))
-//            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
+            startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
         }
     }
 
