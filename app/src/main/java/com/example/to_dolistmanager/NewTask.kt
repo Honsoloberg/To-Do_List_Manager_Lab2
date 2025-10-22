@@ -69,7 +69,7 @@ class NewTask : AppCompatActivity() {
 
             dbHelper = DatabaseHelper(this)
 //            //insert new task into database, check initialized to false
-            dbHelper.insertTask(title, date, desc, false, 6)
+            dbHelper.insertTask(title, date, desc, false, selectedColor)
 //
             //return to main activity
             val intent = Intent(this, MainActivity::class.java)
