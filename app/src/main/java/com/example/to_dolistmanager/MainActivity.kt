@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
 //        dbHelper.insertTask("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, 5)
 //        dbHelper.insertTask("Sweep Kitchen", "09-21-2025", "this is a description", true, 3)
 //        dbHelper.insertTask("Clean Bathroom", "09-21-2025", "this is a description", false, 7)
-//        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false))
-//        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false))
-//        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false))
+//        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, id=0))
+//        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false, id=0))
+//        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false, id =0))
 
 //        //populate items list using the database
         items = dbHelper.getTasks()

@@ -34,6 +34,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"/>
 
+    <ImageView
+        android:layout_width="128px"
+        android:layout_height="128px"
+        android:layout_alignRight="@id/taskDesc"
+        android:layout_alignLeft="@id/checkBox"/>
+
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
