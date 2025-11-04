@@ -29,6 +29,7 @@ import android.os.Environment
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import java.io.File
 
 
@@ -39,6 +40,7 @@ class NewTask : AppCompatActivity() {
 
     private var selectedColor: Int = Color.parseColor("#fcfffd") // Default color
     private var selectedColorView: View? = null //
+    private var selectedImage: Uri? = null
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
@@ -109,7 +111,7 @@ class NewTask : AppCompatActivity() {
 
             dbHelper = DatabaseHelper(this)
 //            //insert new task into database, check initialized to false
-            dbHelper.insertTask(title, date, desc, false, selectedColor)
+            dbHelper.insertTask(title, date, desc, false, selectedColor, selectedImage.toString())
 //
             //return to main activity
             val intent = Intent(this, MainActivity::class.java)
@@ -148,7 +150,6 @@ class NewTask : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.image)
         val upload = findViewById<Button>(R.id.uploadButton)
         val camera = findViewById<Button>(R.id.takePicture)
-        var selectedImage: Uri? = null
 
         //if user selects an image from a gallery, set the image using its URI inside the imageView
         val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
@@ -175,9 +176,7 @@ class NewTask : AppCompatActivity() {
             val photoFile = File.createTempFile("IMG_", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES))
             selectedImage = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
             //fills the imageView with the picture taken
-            takePictureLauncher.launch(selectedImage)
+            takePictureLauncher.launch(selectedImage!!)
         }
-
-
     }
 }
