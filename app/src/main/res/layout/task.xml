@@ -35,6 +35,7 @@
         android:textSize="16sp"/>
 
     <ImageView
+        android:id="@+id/taskImage"
         android:layout_width="128px"
         android:layout_height="128px"
         android:layout_alignRight="@id/taskDesc"

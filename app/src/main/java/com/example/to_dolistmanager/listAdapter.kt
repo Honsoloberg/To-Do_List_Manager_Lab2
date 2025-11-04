@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Filter
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -19,6 +20,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
         lateinit var taskDate: TextView
         lateinit var taskDesc: TextView
         lateinit var background: View
+        lateinit var image: ImageView
     }
 
     override fun getCount(): Int {
@@ -42,6 +44,7 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
             itemHolder.taskDate = converter.findViewById<TextView>(R.id.taskDate)
             itemHolder.taskDesc = converter.findViewById<TextView>(R.id.taskDesc)
             itemHolder.background = converter.findViewById<RelativeLayout>(R.id.taskLayout)
+            itemHolder.image = converter.findViewById<ImageView>(R.id.taskImage)
 
 
             result = converter
