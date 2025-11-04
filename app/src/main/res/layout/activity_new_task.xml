@@ -99,7 +99,7 @@
     <EditText
         android:id="@+id/description"
         android:layout_width="370dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:paddingTop="15dp"
         android:paddingStart="10dp"
@@ -165,8 +165,8 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="160dp"
         android:scaleType="centerCrop"
@@ -175,12 +175,12 @@
 
     <Button
         android:id="@+id/uploadButton"
-        android:layout_width="75dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="113dp"
         android:layout_marginStart="25dp"
         android:text="Upload"
-        android:textSize="8sp"
+        android:textSize="10sp"
         android:backgroundTint="#a64d79"
         app:layout_constraintBottom_toTopOf="@+id/saveTask"
         app:layout_constraintStart_toEndOf="@+id/textView2" />
@@ -189,7 +189,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="122dp"
         android:layout_marginStart="15dp"
         android:text="Upload Image"
         android:textSize="18sp"
@@ -200,7 +200,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="120dp"
         android:layout_marginStart="15dp"
         android:text="or"
         android:textSize="15sp"
@@ -210,11 +210,11 @@
     <Button
         android:id="@+id/takePicture"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginBottom="65dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="113dp"
         android:layout_marginStart="25dp"
         android:text="Take picture"
-        android:textSize="8sp"
+        android:textSize="10sp"
         android:backgroundTint="#a64d79"
         app:layout_constraintBottom_toTopOf="@+id/saveTask"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
