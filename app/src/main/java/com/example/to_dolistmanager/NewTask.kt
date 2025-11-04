@@ -21,14 +21,21 @@ import android.graphics.Color //
 import androidx.core.content.ContextCompat //
 import android.graphics.drawable.GradientDrawable //
 import android.icu.util.Calendar
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+
+import android.net.Uri
+import android.os.Environment
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import java.io.File
 
 
 class NewTask : AppCompatActivity() {
 
 //    //variable for database access
     private lateinit var dbHelper: DatabaseHelper
-
 
     private var selectedColor: Int = Color.parseColor("#fcfffd") // Default color
     private var selectedColorView: View? = null //
@@ -137,6 +144,41 @@ class NewTask : AppCompatActivity() {
 
             colorPickerLayout.addView(colorButton)
         }
+
+        //functionality for uploading image from the phone
+        val image = findViewById<ImageView>(R.id.image)
+        val upload = findViewById<Button>(R.id.uploadButton)
+        val camera = findViewById<Button>(R.id.takePicture)
+        var selectedImage: Uri? = null
+
+        //if user selects an image from a gallery, set the image using its URI inside the imageView
+        val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
+            if (uri != null){
+                image.setImageURI(uri)
+            }
+        }
+
+        //if user successfully takes a picture on the camera, set the imageView as the picture
+        val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && selectedImage != null) {
+                image.setImageURI(selectedImage)
+            }
+        }
+
+        //when user clicks on the upload button, launch the photo picker to pick from the photo gallery
+        upload.setOnClickListener {
+            pickPhotoLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        //when user clicks on the take picture button, it created a temporary file to store the
+        // image with prefix IMG and suffix .jpg, it then converts that file into a URI and launches the camera
+        camera.setOnClickListener {
+            val photoFile = File.createTempFile("IMG_", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+            selectedImage = FileProvider.getUriForFile(this, "${packageName}.provider", photoFile)
+            //fills the imageView with the picture taken
+            takePictureLauncher.launch(selectedImage)
+        }
+
 
     }
 }
