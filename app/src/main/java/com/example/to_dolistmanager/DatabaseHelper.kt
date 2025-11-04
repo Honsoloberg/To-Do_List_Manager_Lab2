@@ -51,7 +51,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
         val checkInt: Int = if(checkBool) 1 else 0
         val db = writableDatabase
         db.execSQL("INSERT INTO Tasks (title,date,description,checked,color,picture) VALUES (?,?,?,?,?,?)",
-            arrayOf(title,date,desc,checkInt, color))
+            arrayOf(title,date,desc,checkInt, color, picture))
     }
 
     //return all tasks in the database as an array of taskItems
@@ -67,9 +67,10 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
             val desc = cursor.getString(cursor.getColumnIndexOrThrow("description"))
             val checkInt = cursor.getInt(cursor.getColumnIndexOrThrow("checked"))
             val colorInt = cursor.getInt(cursor.getColumnIndexOrThrow("color"))
+            val image = cursor.getString(cursor.getColumnIndexOrThrow("picture"))
             val checkBool: Boolean = if(checkInt == 0) false else true
 
-            tasks!!.add(taskItem(title, date, desc, checkBool, colorInt, taskId))
+            tasks!!.add(taskItem(title, date, desc, checkBool, colorInt, image, taskId))
         }
         cursor.close()
         return tasks
@@ -113,7 +114,8 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
     //update a task fully (all parameters)
     fun updateTaskFull(taskId: Int, title: String, date: String, desc: String, color: Int, picture: String){
         val db = writableDatabase
-        db.execSQL("UPDATE Tasks SET title = ?, date = ?, description = ?, color = ?, picture = ? WHERE id = ?", arrayOf(title,date,desc, color, picture, taskId))
+        db.execSQL("UPDATE Tasks SET title = ?, date = ?, description = ?, color = ?, picture = ? WHERE id = ?",
+            arrayOf(title,date,desc, color, picture, taskId))
     }
 
 }
