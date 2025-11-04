@@ -16,7 +16,8 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
                 date TEXT NOT NULL,
                 description TEXT NOT NULL,
                 checked INTEGER NOT NULL,
-                color INTEGER NOT NULL
+                color INTEGER NOT NULL,
+                picture TEXT
                 )
             """.trimIndent()
         )
@@ -39,16 +40,17 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
                 date TEXT NOT NULL,
                 description TEXT NOT NULL,
                 checked INTEGER NOT NULL,
-                color INTEGER NOT NULL
+                color INTEGER NOT NULL,
+                picture TEXT 
                 )
             """.trimIndent()
         )
     }
 
-    fun insertTask(title: String, date: String, desc: String, checkBool: Boolean, color: Int ){
+    fun insertTask(title: String, date: String, desc: String, checkBool: Boolean, color: Int , picture: String){
         val checkInt: Int = if(checkBool) 1 else 0
         val db = writableDatabase
-        db.execSQL("INSERT INTO Tasks (title,date,description,checked,color) VALUES (?,?,?,?,?)",
+        db.execSQL("INSERT INTO Tasks (title,date,description,checked,color,picture) VALUES (?,?,?,?,?,?)",
             arrayOf(title,date,desc,checkInt, color))
     }
 
@@ -59,6 +61,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
         val tasks = ArrayList<taskItem>()
 
         while(cursor.moveToNext()){
+            val taskId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
             val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
             val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
             val desc = cursor.getString(cursor.getColumnIndexOrThrow("description"))
@@ -66,7 +69,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
             val colorInt = cursor.getInt(cursor.getColumnIndexOrThrow("color"))
             val checkBool: Boolean = if(checkInt == 0) false else true
 
-            tasks!!.add(taskItem(title, date, desc, checkBool, colorInt))
+            tasks!!.add(taskItem(title, date, desc, checkBool, colorInt, taskId))
         }
         cursor.close()
         return tasks
@@ -99,6 +102,18 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(
     fun deleteAllTasks(){
         val db = writableDatabase
         db.execSQL("DELETE FROM Tasks")
+    }
+
+    //delete specific task based on task id
+    fun deleteTask(taskId: Int){
+        val db = writableDatabase
+        db.execSQL("DELETE FROM Tasks WHERE id = ?", arrayOf(taskId))
+    }
+
+    //update a task fully (all parameters)
+    fun updateTaskFull(taskId: Int, title: String, date: String, desc: String, color: Int, picture: String){
+        val db = writableDatabase
+        db.execSQL("UPDATE Tasks SET title = ?, date = ?, description = ?, color = ?, picture = ? WHERE id = ?", arrayOf(title,date,desc, color, picture, taskId))
     }
 
 }

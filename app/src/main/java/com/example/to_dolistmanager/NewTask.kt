@@ -137,7 +137,6 @@ class NewTask : AppCompatActivity() {
 
                     //store selected colour
                     selectedColor = color
-
                 }
 
             }
