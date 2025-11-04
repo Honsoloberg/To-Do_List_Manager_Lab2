@@ -10,6 +10,9 @@ import android.widget.Filter
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.net.toUri
+import java.io.File
 
 class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): ArrayAdapter<taskItem>(mContext, R.layout.task, dataset) {
 
@@ -61,6 +64,14 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
         itemHolder.checkBox.isChecked = item.checked
 
         itemHolder.background.setBackgroundColor(item.color)
+
+        val file = File(item.image)
+        if(file.exists()){
+            itemHolder.image.setImageURI(file.toUri())
+        }else{
+            Toast.makeText(context, "Image not found", Toast.LENGTH_SHORT).show()
+        }
+
 
 
         return result

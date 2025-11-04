@@ -13,7 +13,8 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:textColor="@color/black"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/taskDate"
@@ -24,11 +25,11 @@
 
     <TextView
         android:id="@+id/taskDesc"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/taskName"
         android:layout_alignStart="@id/taskName"
-        android:layout_toStartOf="@id/checkBox"
+        android:layout_toStartOf="@id/taskImage"
         android:paddingTop="45dp"
         android:layout_marginEnd="8dp"
         android:textColor="@color/black"
@@ -36,10 +37,11 @@
 
     <ImageView
         android:id="@+id/taskImage"
-        android:layout_width="128px"
-        android:layout_height="128px"
-        android:layout_alignRight="@id/taskDesc"
-        android:layout_alignLeft="@id/checkBox"/>
+        android:layout_width="256px"
+        android:layout_height="256px"
+        android:layout_toStartOf="@id/checkBox"
+        android:layout_centerVertical="true"
+        android:visibility="visible"/>
 
     <CheckBox
         android:id="@+id/checkBox"

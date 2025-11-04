@@ -1,5 +1,6 @@
 package com.example.to_dolistmanager
 
+import android.Manifest
 import android.app.Activity
 import android.os.Bundle
 import android.widget.AdapterView
@@ -10,10 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.widget.SearchView
 import android.widget.TextView
 
 import android.graphics.Color
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +33,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: listAdapter
     private lateinit var searchView: SearchView
     private lateinit var deleteTasks: Button
+
+    val requiredPermission = Manifest.permission.READ_MEDIA_IMAGES
+
+    val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission granted do nothing
+            } else {
+                // Permission denied.
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +61,17 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
 //        dbHelper.deleteAllTasks()
 
-        //dummy tasks
+        checkAndRequestStoragePermission()
+
+
         //add dummy tasks to database
 //        dbHelper.insertTask("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, 5)
 //        dbHelper.insertTask("Sweep Kitchen", "09-21-2025", "this is a description", true, 3)
 //        dbHelper.insertTask("Clean Bathroom", "09-21-2025", "this is a description", false, 7)
-//        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, id=0))
-//        items!!.add(taskItem("Sweep Kitchen", "09-21-2025", "this is a description", false, id=0))
-//        items!!.add(taskItem("Clean Bathroom", "09-21-2025", "this is a description", false, id =0))
+
+        //dummy tasks
+//        val image = "/storage/emulated/0/Pictures/Screenshot 2023-11-19 134436.png"
+//        items!!.add(taskItem("Wash Clothes", "09-21-2025", "Sort laundry by color and fabric, load into washing machine.", false, id=0, image = image))
 
 //        //populate items list using the database
         items = dbHelper.getTasks()
@@ -98,14 +118,17 @@ class MainActivity : AppCompatActivity() {
         items = dbHelper.getTasks()
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if(requestCode == TASK_RESULT_CODE && resultCode == Activity.RESULT_OK){
-//            var title = data?.getStringExtra("title")
-//            var date = data?.getStringExtra("date")
-//            var description = data?.getStringExtra("description")
-//            items!!.add(taskItem(title, date, description, false))
-//            adapter.updateDataset(items!!)
-//        }
-//    }
+    private fun checkAndRequestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                requiredPermission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is already granted do nothing
+        } else {
+            // Permission is not granted, request it
+            // Optional: Check shouldShowRequestPermissionRationale() to show an educational UI
+            requestPermissionLauncher.launch(requiredPermission)
+        }
+    }
 }
