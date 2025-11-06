@@ -155,6 +155,7 @@ class NewTask : AppCompatActivity() {
         val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
             if (uri != null){
                 image.setImageURI(uri)
+                selectedImage = uri
             }
         }
 

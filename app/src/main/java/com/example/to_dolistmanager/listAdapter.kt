@@ -65,12 +65,12 @@ class listAdapter(private val dataset: ArrayList<taskItem>, mContext: Context): 
 
         itemHolder.background.setBackgroundColor(item.color)
 
-        val file = File(item.image)
-        if(file.exists()){
-            itemHolder.image.setImageURI(file.toUri())
-        }else{
-            Toast.makeText(context, "Image not found", Toast.LENGTH_SHORT).show()
+        try {
+            itemHolder.image.setImageURI(item.image.toUri())
+        }catch (e: Exception){
+            //do nothing
         }
+
 
 
 
