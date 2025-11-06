@@ -11,13 +11,13 @@
         android:id="@+id/Title"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#d5a6bd"
+        android:background="#967259"
         android:drawableStart="@drawable/to_do_app_logo2"
         android:fontFamily="@font/alegreya_sc"
         android:gravity="center"
         android:paddingRight="50dp"
         android:paddingTop="18dp"
-        android:text="New Task"
+        android:text="Update Task"
         android:textColor="@color/white"
         android:textSize="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +32,13 @@
         android:layout_marginTop="120dp"
         android:text="Enter Task Title: "
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/taskTitle"
+        app:layout_constraintEnd_toStartOf="@+id/updateTaskTitle"
         app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <EditText
-        android:id="@+id/taskTitle"
+        android:id="@+id/updateTaskTitle"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:layout_marginEnd="15dp"
@@ -72,7 +72,7 @@
 
 
     <EditText
-        android:id="@+id/pickDate"
+        android:id="@+id/updatePickDate"
         android:layout_width="200dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
@@ -83,7 +83,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/taskDate"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/updateTaskTitle" />
 
     <TextView
         android:id="@+id/Descriptiontext"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/taskDate" />
 
     <EditText
-        android:id="@+id/description"
+        android:id="@+id/updateDescription"
         android:layout_width="370dp"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
@@ -125,7 +125,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/updateDescription" />
 
     <LinearLayout
         android:id="@+id/colorPickerLayout"
@@ -144,7 +144,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:backgroundTint="#741b47"
+        android:backgroundTint="#38220f"
         android:text="Update"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -157,7 +157,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="25dp"
         android:layout_marginStart="10dp"
-        android:backgroundTint="#a64d79"
+        android:backgroundTint="#634832"
         android:text="Back"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +181,7 @@
         android:layout_marginStart="25dp"
         android:text="Upload"
         android:textSize="10sp"
-        android:backgroundTint="#a64d79"
+        android:backgroundTint="#634832"
         app:layout_constraintBottom_toTopOf="@+id/updateTask"
         app:layout_constraintStart_toEndOf="@+id/textView2" />
 
@@ -215,9 +215,21 @@
         android:layout_marginStart="25dp"
         android:text="Take picture"
         android:textSize="10sp"
-        android:backgroundTint="#a64d79"
+        android:backgroundTint="#634832"
         app:layout_constraintBottom_toTopOf="@+id/updateTask"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:text="Delete"
+        android:backgroundTint="#990000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.933"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

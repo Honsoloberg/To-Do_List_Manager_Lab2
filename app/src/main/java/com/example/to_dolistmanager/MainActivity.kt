@@ -89,14 +89,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener {_,_, position, _ ->
-            val items: taskItem = items!![position]
-            items.checked = !items.checked
-            adapter.notifyDataSetChanged()
-            var nameOfTask = items.name as String
-            var checkStatus = items.checked
-            dbHelper.updateTaskCheck(nameOfTask, !checkStatus)
-        }
+//        listView.onItemClickListener = AdapterView.OnItemClickListener {_,_, position, _ ->
+//            val items: taskItem = items!![position]
+//            items.checked = !items.checked
+//            adapter.notifyDataSetChanged()
+//            var nameOfTask = items.name as String
+//            var checkStatus = items.checked
+//            dbHelper.updateTaskCheck(nameOfTask, !checkStatus)
+//        }
+
+        //uses task adapter to display listView
+        val taskAdapter = TaskAdapter(this, items!!, dbHelper)
+        listView.adapter=taskAdapter
 
         button.setOnClickListener {
             startActivityForResult(Intent(this, NewTask::class.java), TASK_RESULT_CODE)
@@ -105,7 +109,9 @@ class MainActivity : AppCompatActivity() {
         deleteTasks.setOnClickListener {
             dbHelper.deleteAllTasks()
             items = dbHelper.getTasks()
-            adapter.updateDataset(items as ArrayList<taskItem>)
+//            adapter.updateDataset(items as ArrayList<taskItem>)
+            taskAdapter.clear()
+            taskAdapter.notifyDataSetChanged()
         }
     }
 
