@@ -124,6 +124,7 @@ class UpdateTask : AppCompatActivity() {
         val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
             if (uri != null){
                 image.setImageURI(uri)
+                selectedImage=uri
             }
         }
 
@@ -188,16 +189,22 @@ class UpdateTask : AppCompatActivity() {
             val updatedDesc = description.text.toString()
             val updatedColor = selectedColor
 
-            val savedFile = persistPickedImage(this, selectedImage!!)
-            if (savedFile !=null) {
-                dbHelper = DatabaseHelper(this)
+            if (updatedTitle.isEmpty()){
+                Toast.makeText(this, "Please enter a task title", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
+            val updatedSavedFile = persistPickedImage(this, selectedImage!!)
+            val updateImage = updatedSavedFile?.absolutePath ?:""
+            dbHelper = DatabaseHelper(this)
 //
-                dbHelper.updateTaskFull(taskId, updatedTitle, updatedDate, updatedDesc, updatedColor, savedFile.absolutePath)
+            dbHelper.updateTaskFull(taskId, updatedTitle, updatedDate, updatedDesc, updatedColor, updateImage)
 //
                 //return to main activity
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+
         }
 
 
