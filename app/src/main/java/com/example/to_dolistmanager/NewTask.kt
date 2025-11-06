@@ -102,8 +102,18 @@ class NewTask : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            //saves selectedImage into app storage
-            val savedFile = persistPickedImage(this, selectedImage!!)
+            //saves selectedImage into app storage if not null
+            val savedFile = if (selectedImage!=null){persistPickedImage(this, selectedImage!!)} else null
+            //Either choose a saved path or a Null String
+            val imageFile = savedFile?.absolutePath ?:""
+
+            dbHelper = DatabaseHelper(this)
+//              //insert new task into database, check initialized to false
+            dbHelper.insertTask(title, date, desc, false, selectedColor, imageFile)
+//
+            //return to main activity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 //
 //            val resultIntent = Intent().apply {
 //                putExtra("title", title)
@@ -114,16 +124,7 @@ class NewTask : AppCompatActivity() {
 //            setResult(Activity.RESULT_OK, resultIntent )
 //            finish()
 
-            //if the image was succesfully saved
-            if (savedFile !=null) {
-                dbHelper = DatabaseHelper(this)
-//              //insert new task into database, check initialized to false
-                dbHelper.insertTask(title, date, desc, false, selectedColor, savedFile.absolutePath)
-//
-                //return to main activity
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+
         }
 
 
