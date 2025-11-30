@@ -2,6 +2,7 @@ package com.example.to_dolistmanager
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,10 @@ import android.view.View //
 import android.graphics.Color //
 import androidx.core.content.ContextCompat //
 import android.graphics.drawable.GradientDrawable //
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.icu.util.Calendar
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,9 +36,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import java.io.File
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.component3
+import kotlin.math.sqrt
 
 
-class NewTask : AppCompatActivity() {
+class NewTask : AppCompatActivity(), SensorEventListener {
 
 //    //variable for database access
     private lateinit var dbHelper: DatabaseHelper
@@ -45,6 +54,8 @@ class NewTask : AppCompatActivity() {
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private lateinit var sensorManager: SensorManager
+    private var lightSensor: Sensor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +70,10 @@ class NewTask : AppCompatActivity() {
 
         //Date Selector
         val datePicker= findViewById<EditText>(R.id.pickDate)
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
 
         datePicker.setOnClickListener{
             val calendar = Calendar.getInstance()
@@ -180,4 +195,53 @@ class NewTask : AppCompatActivity() {
             takePictureLauncher.launch(selectedImage!!)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        lightSensor?.also {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if(event == null) return
+
+        when(event.sensor?.type) {
+            Sensor.TYPE_LIGHT -> {
+                val luxValue = event.values[0]
+
+                when{
+                    luxValue < 10 -> {
+                        changeBrightness(0.1f)
+                    }
+                    luxValue < 500 -> {
+                        changeBrightness(0.5f)
+
+                    }
+                    else -> {
+                        changeBrightness(1.0f)
+                    }
+                }
+            }
+        }
+
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+
+    fun changeBrightness(bval: Float){
+        val validatedBrightness = bval.coerceIn(0.0f, 1.0f)
+
+        val layoutParams = window.attributes
+        layoutParams.screenBrightness = validatedBrightness
+        window.attributes = layoutParams
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.to_dolistmanager
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.Button
@@ -16,11 +17,22 @@ import android.widget.SearchView
 import android.widget.TextView
 
 import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.component3
+import kotlin.math.sqrt
+import android.hardware.SensorManager
+import android.os.Handler
+import android.os.Looper
+import android.hardware.SensorEventListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SensorEventListener {
 
     var items: ArrayList<taskItem>? = null
 
@@ -32,7 +44,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var button: Button
     private lateinit var adapter: listAdapter
     private lateinit var searchView: SearchView
+    private val SHAKE_THRESHOLD = 6.0f
     private lateinit var deleteTasks: Button
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var sensorManager: SensorManager
+    private var accelerometer: Sensor? = null
+    private var lightSensor: Sensor? = null
 
     val requiredPermission = Manifest.permission.READ_MEDIA_IMAGES
 
@@ -62,6 +79,11 @@ class MainActivity : AppCompatActivity() {
 //        dbHelper.deleteAllTasks()
 
         checkAndRequestStoragePermission()
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
 
 
         //add dummy tasks to database
@@ -109,6 +131,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        accelerometer?.also {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+
+        }
+        lightSensor?.also {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
 //    when the activity is started again, update the tasklist from the database
     override fun onStart(){
         super.onStart()
@@ -131,4 +169,51 @@ class MainActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(requiredPermission)
         }
     }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if(event == null) return
+
+        when(event.sensor?.type) {
+
+            Sensor.TYPE_ACCELEROMETER -> {
+                val (x, y, z) = event.values
+                val totalAcceleration = sqrt(x + y + z)
+
+                if (totalAcceleration > SHAKE_THRESHOLD) {
+                    dbHelper.deleteAllTasks()
+                    items = dbHelper.getTasks()
+                    adapter.updateDataset(items as ArrayList<taskItem>)
+                }
+            }
+            Sensor.TYPE_LIGHT -> {
+                val luxValue = event.values[0]
+
+                when{
+                    luxValue < 10 -> {
+                        changeBrightness(0.1f)
+                    }
+                    luxValue < 500 -> {
+                        changeBrightness(0.5f)
+
+                    }
+                    else -> {
+                        changeBrightness(1.0f)
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+    fun changeBrightness(bval: Float){
+        val validatedBrightness = bval.coerceIn(0.0f, 1.0f)
+
+        val layoutParams = window.attributes
+        layoutParams.screenBrightness = validatedBrightness
+        window.attributes = layoutParams
+    }
+
 }
