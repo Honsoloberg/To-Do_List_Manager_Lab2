@@ -2,7 +2,6 @@ package com.example.to_dolistmanager
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,8 @@ import android.widget.Button
 import android.content.Intent
 import android.widget.DatePicker
 import android.widget.Toast
+import android.content.Context
+import android.provider.OpenableColumns
 
 
 import android.view.View //
@@ -114,6 +115,19 @@ class NewTask : AppCompatActivity(), SensorEventListener {
                 Toast.makeText(this, "Please enter a task title", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            //saves selectedImage into app storage if not null
+            val savedFile = if (selectedImage!=null){persistPickedImage(this, selectedImage!!)} else null
+            //Either choose a saved path or a Null String
+            val imageFile = savedFile?.absolutePath ?:""
+
+            dbHelper = DatabaseHelper(this)
+//              //insert new task into database, check initialized to false
+            dbHelper.insertTask(title, date, desc, false, selectedColor, imageFile)
+//
+            //return to main activity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 //
 //            val resultIntent = Intent().apply {
 //                putExtra("title", title)
@@ -124,13 +138,7 @@ class NewTask : AppCompatActivity(), SensorEventListener {
 //            setResult(Activity.RESULT_OK, resultIntent )
 //            finish()
 
-            dbHelper = DatabaseHelper(this)
-//            //insert new task into database, check initialized to false
-            dbHelper.insertTask(title, date, desc, false, selectedColor, selectedImage.toString())
-//
-            //return to main activity
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+
         }
 
 
@@ -243,5 +251,30 @@ class NewTask : AppCompatActivity(), SensorEventListener {
         window.attributes = layoutParams
     }
 
+
+
+
+    //function that takes the relative Uri and creates a file context.filesDir in apps internal storage
+    //to save the image permanently within the app
+    private fun persistPickedImage(context: Context, srcUri: Uri, suggestedName: String? = null): File? {
+        return try {
+            val displayName = suggestedName ?: run {
+                context.contentResolver.query(srcUri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
+                    if (c.moveToFirst()) c.getString(0) else "image_${System.currentTimeMillis()}.jpg"
+                } ?: "image_${System.currentTimeMillis()}.jpg"
+            }
+
+            val dest = File(context.filesDir, displayName)
+            context.contentResolver.openInputStream(srcUri)?.use { input ->
+                dest.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            } ?: return null
+            dest
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
 }
