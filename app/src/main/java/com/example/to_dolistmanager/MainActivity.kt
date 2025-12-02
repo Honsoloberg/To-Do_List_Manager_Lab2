@@ -42,9 +42,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var listView: ListView
     private lateinit var button: Button
+    private var taskAdapter: TaskAdapter? = null
     private lateinit var adapter: listAdapter
     private lateinit var searchView: SearchView
-    private val SHAKE_THRESHOLD = 6.0f
+    private val SHAKE_THRESHOLD = 7.0f
     private lateinit var deleteTasks: Button
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var sensorManager: SensorManager
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 //        }
 
         //uses task adapter to display listView
-        val taskAdapter = TaskAdapter(this, items!!, dbHelper)
+        taskAdapter = TaskAdapter(this, items!!, dbHelper)
         listView.adapter=taskAdapter
 
         button.setOnClickListener {
@@ -131,9 +132,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         deleteTasks.setOnClickListener {
             dbHelper.deleteAllTasks()
             items = dbHelper.getTasks()
-//            adapter.updateDataset(items as ArrayList<taskItem>)
-            taskAdapter.clear()
-            taskAdapter.notifyDataSetChanged()
+            adapter.updateDataset(items as ArrayList<taskItem>)
+            taskAdapter!!.clear()
+            taskAdapter!!.notifyDataSetChanged()
         }
     }
 
@@ -188,7 +189,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 if (totalAcceleration > SHAKE_THRESHOLD) {
                     dbHelper.deleteAllTasks()
                     items = dbHelper.getTasks()
-                    adapter.updateDataset(items as ArrayList<taskItem>)
+                    taskAdapter!!.clear()
+                    taskAdapter!!.notifyDataSetChanged()
                 }
             }
             Sensor.TYPE_LIGHT -> {
